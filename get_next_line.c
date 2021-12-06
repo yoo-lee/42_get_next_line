@@ -30,8 +30,12 @@ char	*split_line(char *buf, char **tmp)
 	nlen = ft_strlen(buf);
 	line_before_n_len = nlen - ft_strlen(tmp1);
 	line_after_n = ft_substr(buf, line_before_n_len + 1, nlen);
+	if (!line_after_n)
+		return (NULL);
 	*tmp = line_after_n;
 	line_before_n = ft_strndup(buf, line_before_n_len + 1);
+	if (!line_before_n)
+		return (NULL);
 	return (line_before_n);
 }
 
@@ -48,6 +52,8 @@ static int	judge_n(char *buf, char **memo, char **line)
 	{
 		*line = split_line(tmp2, memo);
 		ft_free(&tmp2);
+		if (!*line)
+			return (-1);
 	}
 	else if (ft_strlen(buf) != 0)
 		*memo = tmp2;
@@ -56,7 +62,7 @@ static int	judge_n(char *buf, char **memo, char **line)
 	else
 		ft_free(&tmp2);
 	ft_free(&buf);
-	return (-1);
+	return (1);
 }
 
 static int	read_line(char **line, char **memo, int fd)
@@ -64,7 +70,6 @@ static int	read_line(char **line, char **memo, int fd)
 	int		result;
 	char	*buf;
 
-	buf = NULL;
 	result = 1;
 	while (result > 0)
 	{
@@ -72,18 +77,17 @@ static int	read_line(char **line, char **memo, int fd)
 		if (!buf)
 			return (-1);
 		result = read(fd, buf, BUFFER_SIZE);
+		if (result == -1)
+			break ;
 		buf[result] = '\0';
-		if (!buf)
-		{
-			ft_free(&buf);
-			return (-1);
-		}
-		judge_n(buf, memo, line);
+		result = judge_n(buf, memo, line);
+		if (result == -1)
+			break ;
 		if (*line)
-		{
 			return (1);
-		}
 	}
+	ft_free(&buf);
+	ft_free(memo);
 	return (-1);
 }
 
@@ -96,12 +100,10 @@ char	*get_next_line(int fd)
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
-	if (judge_n < 0)
-		ft_free(&line);
 	if (!memo)
 		memo = ft_strndup("", 0);
 	tmp = read_line (&line, &memo, fd);
-	if (!tmp)
+	if (tmp == -1)
 		return (NULL);
 	return (line);
 }
