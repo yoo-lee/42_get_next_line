@@ -1,2 +1,2 @@
 # 42
-its assignment of 42
+Assignment of 42
