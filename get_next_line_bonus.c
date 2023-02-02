@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	ft_free(char **p)
 {
@@ -87,7 +87,6 @@ char	*get_next_line(int fd)
 	static char	*memo;
 	char		*line;
 	int			tmp;
-	// size_t			i;
 	
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE < 0)
@@ -97,11 +96,5 @@ char	*get_next_line(int fd)
 	if (!memo)
 		memo = ft_strndup("", 0);
 	tmp = read_line (&line, &memo, fd);
-	printf("fd = %d\n", fd);
-	printf("getnextline = %s\n", line);
-	// while(i <= fd)
-	// {
-	// read_line (&line, &memo, i);
-	// }
 	return (line);
 }

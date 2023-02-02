@@ -3,7 +3,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
-#define BUFFER_SIZE 1024
+# define BUFFER_SIZE 1024
 
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
