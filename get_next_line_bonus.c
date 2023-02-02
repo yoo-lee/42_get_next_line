@@ -86,7 +86,9 @@ char	*get_next_line(int fd)
 {
 	static char	*memo;
 	char		*line;
-
+	int			tmp;
+	// size_t			i;
+	
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
@@ -94,6 +96,12 @@ char	*get_next_line(int fd)
 		ft_free(&line);
 	if (!memo)
 		memo = ft_strndup("", 0);
-	read_line (&line, &memo, fd);
+	tmp = read_line (&line, &memo, fd);
+	printf("fd = %d\n", fd);
+	printf("getnextline = %s\n", line);
+	// while(i <= fd)
+	// {
+	// read_line (&line, &memo, i);
+	// }
 	return (line);
 }
